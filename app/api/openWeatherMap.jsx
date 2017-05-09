@@ -10,8 +10,8 @@ module.exports = {
 
     return axios.get(requestUrl)
       .then( (res) => {
-        if ( res.data.cod && res.data.message ) {
-          throw new Error(res.data.message);
+        if ( res.cod && res.message ) {
+          throw new Error(res.message);
         } else {
           return res.data.main.temp;
         }
