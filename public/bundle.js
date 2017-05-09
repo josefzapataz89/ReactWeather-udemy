@@ -25071,12 +25071,14 @@
 	    });
 
 	    openWeatherMap.getTemp(location).then(function (temp) {
+	      console.log("then: ", temp);
 	      that.setState({
 	        location: location,
 	        temp: temp,
 	        isLoading: false
 	      });
 	    }, function (e) {
+	      console.log("error: ", e);
 	      that.setState({
 	        isLoading: false,
 	        errorMessage: e.message
@@ -25222,6 +25224,8 @@
 	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var React = __webpack_require__(8);
+	var ReactDOM = __webpack_require__(165);
+	var ReactDOMServer = __webpack_require__(267);
 
 	var ErrorModal = React.createClass({
 	  displayName: 'ErrorModal',
@@ -25236,16 +25240,12 @@
 	    message: React.PropTypes.string.isRequired
 	  },
 	  componentDidMount: function componentDidMount() {
-	    var modal = new Foundation.Reveal($('#error-modal'));
-	    modal.open();
-	  },
-	  render: function render() {
 	    var _props = this.props,
 	        title = _props.title,
 	        message = _props.message;
 
 
-	    return React.createElement(
+	    var modalMarkup = React.createElement(
 	      'div',
 	      { id: 'error-modal', className: 'reveal tiny text-center', 'data-reveal': '' },
 	      React.createElement(
@@ -25268,6 +25268,15 @@
 	        )
 	      )
 	    );
+
+	    var $modal = $(ReactDOMServer.renderToString(modalMarkup));
+	    $(ReactDOM.findDOMNode(this)).html($modal);
+
+	    var modal = new Foundation.Reveal($('#error-modal'));
+	    modal.open();
+	  },
+	  render: function render() {
+	    return React.createElement('div', null);
 	  }
 	});
 
@@ -25291,14 +25300,13 @@
 	    var requestUrl = OPEN_WEATHER_MAP_URL + '&q=' + encodedLocation;
 
 	    return axios.get(requestUrl).then(function (res) {
-	      if (res.cod && res.message) {
-	        throw new Error(res.message);
+	      if (res.data.cod && res.data.message) {
+	        throw new Error(res.data.message);
 	      } else {
 	        return res.data.main.temp;
 	      }
-	    }, function (error) {
-	      // throw new Error(error.data.message);
-	      throw new Error('Unable to fetch weather for that location.');
+	    }, function (res) {
+	      throw new Error('city not found.');
 	    });
 	  }
 	};
@@ -29330,6 +29338,15 @@
 	exports.push([module.id, ".page-title {\n  color: #555;\n  margin-top: 2.5rem;\n  margin-bottom: 2.5rem; }\n\ninput[type=search] {\n  box-shadow: none; }\n", ""]);
 
 	// exports
+
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = __webpack_require__(155);
 
 
 /***/ }
