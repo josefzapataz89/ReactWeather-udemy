@@ -31,7 +31,7 @@ module.exports = {
       Examples: 'app/components/Examples.jsx',
       ErrorModal: 'app/components/ErrorModal.jsx',
       openWeatherMap: 'app/api/openWeatherMap.jsx',
-      applicationStyles: 'app/styles/app.css'
+      applicationStyles: 'app/styles/app.scss'
     },
     extensions: ['', '.js', '.jsx']
   },
@@ -44,6 +44,10 @@ module.exports = {
         },
         test: /\.jsx$/,
         exclude: /(node_modules|bower_components)/
+      },
+      {
+        test: /\.scss$/,
+        loaders: ["style-loader", "style-loader", "sass-loader"]
       }
     ]
   }
